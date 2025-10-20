@@ -1,66 +1,75 @@
+<p align="center">
+  <img src="assets/Orion-logo_nobg.png" alt="Orion logo" width="200" />
+</p>
+
 # Orion
 
-> Kubernetes for JS Devs – orchestrateur JavaScript/TypeScript pour services Node, Bun et Deno.
+> Kubernetes for JS Developers — a full TypeScript control plane, agent, CLI, and dashboard for orchestrating JavaScript services without containers.
 
-Orion est un control plane full TypeScript capable d'orchestrer des services JavaScript sans conteneurs. Il gère la planification, le déploiement, la supervision et le redémarrage automatique de vos applications Node.js, Next.js, Express, Vite, Bun ou Deno, en local ou sur plusieurs machines.
+Orion brings declarative orchestration to Node.js, Next.js, Bun, Deno, and other modern JavaScript runtimes. It provides a lightweight control plane, agents, CLI, dashboard, and DNS automation so you can deploy, scale, and observe services across laptops or fleets of machines.
 
-## Points clés
+## Highlights
 
-- **Control plane Fastify** avec planificateur round-robin et reconciler inspiré de Kubernetes.
-- **Agent léger** s'exécutant sur chaque machine, lançant vos services via `child_process` ou `bun/deno`.
-- **CLI declarative-first** (`orion apply`, `orion get`, `orion logs`) pour piloter vos clusters.
-- **Dashboard Next.js + Tailwind** offrant une vue en temps réel des services, nodes et replicas.
-- **Configuration déclarative** via `orion.yaml`, validée par Zod.
-- **Extensibilité** pensée pour plugins, hooks et intégrations CI/CD.
+- **TypeScript control plane** powered by Fastify + WebSocket reconciliation loops.
+- **Lightweight agents** that supervise processes (Node/Bun/Deno) with restarts and heartbeats.
+- **Declarative CLI** for `init`, `apply`, `get`, `logs`, `exec`, and launching the dashboard.
+- **Next.js dashboard** with real-time service and node insights.
+- **Shared schemas** using Zod for config validation.
+- **DNS manager** with DigitalOcean, Cloudflare, AWS Route53, wildcard proxy, and local providers, plus optional wildcard SSL automation.
+- **Examples** for Node, Next.js, Vite, and PWA workloads.
 
-## Monorepo
+## Monorepo layout
 
 ```
 /packages
-  core        # Control plane Fastify + scheduler + controllers
-  agent       # Daemon Node.js (WebSocket client + runner)
-  cli         # Interface en ligne de commande
-  dashboard   # Application Next.js / Tailwind
-  shared      # Types, schémas, utilitaires communs
+  core          # Control plane (API server, scheduler, controllers)
+  agent         # Node agent daemon
+  cli           # Orion CLI
+  dashboard     # Next.js + Tailwind dashboard
+  dns-manager   # Multi-provider DNS automation
+  shared        # Shared schemas and utilities
 /examples
   simple-service
   next-app
+  vite-app
+  vite-pwa
 /docs
   architecture.md
   api.md
   plugins.md
+  dns-manager/
 ```
 
-Le projet utilise pnpm + turborepo pour orchestrer les builds (`pnpm install && pnpm build`).
+Orion uses `pnpm` and Turborepo to coordinate builds.
 
-## Démarrage rapide
+## Quick start
 
-1. **Installer les dépendances**
+1. **Install dependencies**
 
 ```bash
 pnpm install
 ```
 
-2. **Lancer l'environnement complet** (control plane + agent + dashboard)
+2. **Launch the full stack (control plane, agent, dashboard)**
 
 ```bash
 scripts/dev.sh
 ```
 
-3. **Appliquer une configuration**
+3. **Deploy a configuration**
 
 ```bash
 pnpm --filter @orion/cli run dev
-# Dans un autre terminal
-orion init
-orion apply -f orion.yaml
+# in another terminal
+gorion init
+gorion apply -f orion.yaml
 ```
 
-4. **Explorer le dashboard**
+4. **Open the dashboard**
 
-Visitez http://localhost:3000 pour visualiser services, nodes, logs live.
+Visit http://localhost:3000 to inspect services, nodes, and live cluster state.
 
-## Configuration YAML
+## Declarative configuration
 
 ```yaml
 apiVersion: orion/v1
@@ -88,28 +97,24 @@ spec:
   nodes: []
 ```
 
-## Paquets principaux
+## Core packages
 
-- **@orion/core** – expose une API REST + WebSocket (`/api/apply`, `/api/services`, `/ws`). Scheduler round-robin et boucle de réconciliation démarrées automatiquement.
-- **@orion/agent** – daemon Node 20+, gère la connexion WebSocket, envoie des heartbeats (CPU/Mem via pidusage) et lance les services localement.
-- **@orion/cli** – CLI Commander.js + Chalk + Ora. Commandes : `init`, `apply`, `get services`, `logs`, `exec`, `dashboard`.
-- **@orion/dashboard** – Next.js 14, React 18, Tailwind. Vue cluster overview, liste services/nodes, placeholder streaming logs.
-- **@orion/shared** – Schéma Zod (`configSchema`), utilitaires `createLogger`, `generateId`, helpers temps.
+- **@orion/core** – REST + WebSocket API server with a round-robin scheduler and reconciliation loops.
+- **@orion/agent** – Node 20+ daemon streaming metrics, heartbeats, and running processes with restart policies.
+- **@orion/cli** – Commander-based CLI with Chalk/Ora UX and schema validation.
+- **@orion/dashboard** – Next.js 14 + Tailwind dashboard for services, nodes, and (future) live logs.
+- **@orion/dns-manager** – Multi-provider DNS + optional wildcard SSL automation.
+- **@orion/shared** – Zod schemas, logger helpers, ID/time utilities shared across packages.
 
-## Roadmap v1 → v1.5
+## Roadmap
 
-- [ ] Streaming des logs et exécution à distance (`orion logs --follow`, `orion exec`).
-- [ ] Auto-scaling CPU/mémoire selon policies déclarées.
-- [ ] Plugins (ex: `@orion/plugin-vercel`) avec hooks `beforeStart` / `afterDeploy`.
-- [ ] Auth & RBAC via JWT.
-- [ ] Mode serverless (triggers HTTP/cron/queue) et connecteurs Redis/RabbitMQ.
-- [ ] Federation multi-clusters et preview environments.
+- Streaming logs and remote exec (`orion logs --follow`, `orion exec`).
+- Auto-scaling driven by CPU/memory policies.
+- Plugin marketplace (e.g., `@orion/plugin-vercel`).
+- Auth & RBAC with JWT roles.
+- Serverless triggers (HTTP, cron, queue integrations).
+- Multi-cluster federation and preview environments.
 
-## Licence
+## License
 
-Projet licencié sous [Apache 2.0](LICENSE).
-
-## Contribuer
-
-Voir [CONTRIBUTING.md](CONTRIBUTING.md) pour guides d'installation et de contribution.
-# Orion
+Licensed under [Apache 2.0](LICENSE).
