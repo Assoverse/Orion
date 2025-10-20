@@ -69,6 +69,10 @@ gorion apply -f orion.yaml
 
 Visit http://localhost:3000 to inspect services, nodes, and live cluster state.
 
+5. **DOCS**
+
+For more infos go see the  [wiki orion](https://github.com/Assoverse/Orion/wiki)
+
 ## Declarative configuration
 
 ```yaml
