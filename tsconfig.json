@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2021",
+    "lib": ["ES2021", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@orion/shared/*": ["packages/shared/src/*"],
+      "@orion/core/*": ["packages/core/src/*"],
+      "@orion/agent/*": ["packages/agent/src/*"]
+    }
+  },
+  "include": ["packages"]
+}

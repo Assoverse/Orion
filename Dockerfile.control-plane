@@ -1,0 +1,16 @@
+FROM node:20-alpine AS deps
+WORKDIR /app
+
+COPY package.json pnpm-workspace.yaml turbo.json tsconfig.json ./
+COPY packages ./packages
+RUN corepack enable && pnpm install --filter @orion/core... --prod=false
+RUN pnpm --filter @orion/core... build
+
+FROM node:20-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=deps /app/packages/core/dist ./dist
+COPY --from=deps /app/packages/core/package.json ./package.json
+RUN corepack enable && pnpm install --prod --no-optional
+EXPOSE 6060
+CMD ["node", "dist/index.js"]

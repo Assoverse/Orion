@@ -1,0 +1,30 @@
+{
+  "name": "@orion/dns-manager",
+  "version": "0.1.0",
+  "description": "DNS management module for Orion orchestrator with multi-provider support.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsx watch src/index.ts",
+    "test": "vitest",
+    "lint": "eslint 'src/**/*.{ts,tsx}'"
+  },
+  "dependencies": {
+    "@aws-sdk/client-route-53": "^3.716.0",
+    "@orion/shared": "workspace:*",
+    "dns2": "^2.1.0",
+    "node-fetch": "^3.3.2",
+    "sudo-prompt": "^9.2.1",
+    "undici": "^6.19.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@types/dns2": "^1.2.0",
+    "eslint": "^8.56.0",
+    "tsup": "^7.2.0",
+    "tsx": "^4.7.1",
+    "vitest": "^0.34.6"
+  }
+}

@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Support Questions
+    url: https://github.com/assoverse/orion/discussions
+    about: Posez vos questions ou partagez vos idées dans les discussions.
+  - name: Security Reports
+    url: https://github.com/assoverse/orion/security/policy
+    about: Signalez les vulnérabilités en suivant la procédure de sécurité.

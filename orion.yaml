@@ -1,0 +1,25 @@
+apiVersion: orion/v1
+kind: Config
+metadata:
+  name: local-demo
+  environment: dev
+spec:
+  services:
+    - name: example-api
+      path: ./examples/simple-service
+      entry: src/index.ts
+      runtime: node
+      replicas: 1
+      env:
+        NODE_ENV: development
+      ports:
+        - name: http
+          port: 4000
+    - name: next-web
+      path: ./examples/next-app
+      type: nextjs
+      runtime: node
+      replicas: 1
+      command: "pnpm dev"
+  nodes: []
+  plugins: []

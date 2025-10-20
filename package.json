@@ -1,0 +1,18 @@
+{
+  "name": "orion",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Orion – orchestrateur JavaScript/TypeScript, \"Kubernetes for JS Devs\".",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "deploy:control-plane": "pnpm --filter @orion/core run start"
+  },
+  "devDependencies": {
+    "turbo": "^1.12.3",
+    "typescript": "^5.3.3"
+  }
+}

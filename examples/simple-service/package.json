@@ -1,0 +1,18 @@
+{
+  "name": "orion-example-simple-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsup src/index.ts --format esm,cjs"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "tsx": "^4.7.1",
+    "tsup": "^7.2.0"
+  }
+}

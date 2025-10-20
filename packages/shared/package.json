@@ -1,0 +1,24 @@
+{
+  "name": "@orion/shared",
+  "version": "0.1.0",
+  "description": "Shared types, schemas, and utilities for Orion.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "dev": "tsx watch src/index.ts",
+    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "eslint": "^8.56.0",
+    "tsx": "^4.7.1",
+    "tsup": "^7.2.0",
+    "vitest": "^0.34.6"
+  }
+}
