@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Orion - Kubernetes for JavaScript Developers. Orchestrate Node.js, Next.js, Bun, and Deno services with a lightweight control plane.">
+    <meta name="description" content="Orion - Kubernetes for JavaScript Developers. Orchestrate Node.js, Next.js, Bun, and Deno services without containers.">
     <meta name="keywords" content="Kubernetes, JavaScript, TypeScript, Node.js, Orchestration, Docker Alternative, Service Mesh, Control Plane">
     <meta name="author" content="Orion Contributors">
     <title>Orion - Kubernetes for JavaScript Developers</title>
@@ -20,8 +20,8 @@
             <ul class="nav-links">
                 <li><a href="#overview">Overview</a></li>
                 <li><a href="#features">Features</a></li>
-                <li><a href="#architecture">Architecture</a></li>
-                <li><a href="#quickstart">Quick Start</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#usage">Usage</a></li>
                 <li><a href="#docs">Documentation</a></li>
                 <li><a href="#contributing">Contributing</a></li>
                 <li><a href="https://github.com/Assoverse/Orion" target="_blank" class="github-link">
@@ -37,46 +37,39 @@
     <header class="hero">
         <div class="container">
             <div class="hero-content">
-                <div class="hero-badge">Kubernetes for JavaScript Developers</div>
                 <h1 class="hero-title">
                     <span class="gradient-text">Orion</span>
                 </h1>
-                <p class="hero-subtitle">Orchestrate JavaScript services without containers</p>
+                <p class="hero-subtitle">Kubernetes for JavaScript Developers</p>
                 <p class="hero-description">
-                    A full TypeScript control plane, agent, CLI, and dashboard for orchestrating Node.js, Next.js, Bun, and Deno services. Declarative deployments, auto-scaling, and service discovery—no Docker required.
+                    Orchestrate Node.js, Next.js, Bun, and Deno services with a full TypeScript control plane, agents, CLI, and dashboard. Declarative deployments without Docker.
                 </p>
                 <div class="hero-badges">
-                    <img src="https://img.shields.io/badge/TypeScript-5.3+-blue.svg" alt="TypeScript">
+                    <img src="https://img.shields.io/badge/TypeScript-5.3+-3178c6.svg" alt="TypeScript">
                     <img src="https://img.shields.io/badge/license-Apache--2.0-blue.svg" alt="License">
-                    <img src="https://img.shields.io/badge/pnpm-workspace-orange.svg" alt="pnpm">
+                    <img src="https://img.shields.io/badge/pnpm-workspace-f69220.svg" alt="pnpm">
                 </div>
                 <div class="hero-actions">
-                    <a href="#quickstart" class="btn btn-primary">Get Started</a>
-                    <a href="https://github.com/Assoverse/Orion/wiki" target="_blank" class="btn btn-secondary">Read Documentation</a>
+                    <a href="#installation" class="btn btn-primary">Get Started</a>
+                    <a href="https://github.com/Assoverse/Orion/wiki" target="_blank" class="btn btn-secondary">Documentation</a>
                 </div>
             </div>
-            <div class="hero-visual">
-                <div class="terminal-window">
-                    <div class="terminal-header">
-                        <span class="terminal-button red"></span>
-                        <span class="terminal-button yellow"></span>
-                        <span class="terminal-button green"></span>
-                        <span class="terminal-title">terminal</span>
-                    </div>
-                    <div class="terminal-body">
-<pre><code><span class="prompt">$</span> gorion apply -f orion.yaml
-<span class="success">✓</span> Service <span class="highlight">api-users</span> scheduled on node-01
-<span class="success">✓</span> Service <span class="highlight">web</span> scheduled on node-02
-<span class="info">⚡</span> Control plane running at http://localhost:4000
-<span class="info">🎨</span> Dashboard available at http://localhost:3000
+            <div class="hero-code">
+                <pre><code><span class="comment"># Create your configuration</span>
+<span class="keyword">apiVersion:</span> orion/v1
+<span class="keyword">kind:</span> Config
+<span class="keyword">spec:</span>
+  <span class="keyword">services:</span>
+    - <span class="keyword">name:</span> <span class="string">api-users</span>
+      <span class="keyword">runtime:</span> <span class="string">node</span>
+      <span class="keyword">replicas:</span> <span class="number">2</span>
+      <span class="keyword">ports:</span>
+        - <span class="keyword">port:</span> <span class="number">4000</span>
 
-<span class="prompt">$</span> gorion get services
-<span class="table-header">NAME        STATUS    REPLICAS   NODES</span>
-api-users   Running   2/2        node-01
-web         Running   1/1        node-02
-</code></pre>
-                    </div>
-                </div>
+<span class="comment"># Deploy your services</span>
+<span class="prompt">$</span> gorion apply -f orion.yaml
+<span class="success">✓</span> Service api-users scheduled
+<span class="success">✓</span> Dashboard at http://localhost:3000</code></pre>
             </div>
         </div>
     </header>
@@ -85,263 +78,208 @@ web         Running   1/1        node-02
         <section id="overview" class="section">
             <div class="container">
                 <h2 class="section-title">What is Orion?</h2>
-                <p class="section-intro">
-                    Orion brings Kubernetes-style declarative orchestration to JavaScript without the complexity of containers.
-                    Perfect for development, testing, and lightweight production deployments.
-                </p>
                 <div class="feature-grid">
                     <div class="feature-card">
                         <div class="feature-icon">🎯</div>
                         <h3>Declarative Configuration</h3>
-                        <p>Define your services, replicas, and ports in YAML. Orion handles the rest with reconciliation loops.</p>
+                        <p>Define services in YAML. Orion reconciles your desired state automatically with intelligent scheduling.</p>
                     </div>
                     <div class="feature-card">
-                        <div class="feature-icon">📡</div>
-                        <h3>Real-time Control Plane</h3>
-                        <p>TypeScript-powered Fastify server with WebSocket reconciliation. REST + WebSocket API for full control.</p>
+                        <div class="feature-icon">⚡</div>
+                        <h3>TypeScript Control Plane</h3>
+                        <p>Fastify-powered API server with WebSocket reconciliation. REST + WebSocket for full cluster control.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">🔄</div>
-                        <h3>Auto-restart & Heartbeats</h3>
-                        <p>Agents supervise processes with automatic restarts on failure. Health checks keep services alive.</p>
+                        <h3>Auto-restart & Health Checks</h3>
+                        <p>Agents supervise processes with restart policies. Heartbeats keep your services alive automatically.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">🎨</div>
-                        <h3>Next.js Dashboard</h3>
-                        <p>Beautiful Tailwind UI with real-time service metrics, logs, and node insights. Monitor everything visually.</p>
+                        <h3>Beautiful Dashboard</h3>
+                        <p>Next.js 14 + Tailwind UI with real-time metrics. Monitor services, nodes, and logs visually.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">🌐</div>
                         <h3>DNS Automation</h3>
-                        <p>Multi-provider DNS manager with DigitalOcean, Cloudflare, AWS Route53, and wildcard SSL support.</p>
+                        <p>Multi-provider DNS with DigitalOcean, Cloudflare, AWS Route53. Wildcard SSL with Let's Encrypt.</p>
                     </div>
                     <div class="feature-card">
                         <div class="feature-icon">🚀</div>
                         <h3>Multi-runtime Support</h3>
-                        <p>Node.js, Bun, Deno, Next.js, Vite, and more. Run any JavaScript/TypeScript workload.</p>
+                        <p>Node.js, Bun, Deno, Next.js, Vite, PWAs. Any JavaScript/TypeScript workload runs seamlessly.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="features" class="section section-dark">
+        <section id="features" class="section section-alt">
             <div class="container">
                 <h2 class="section-title">Core Features</h2>
-                <div class="features-list">
-                    <div class="feature-item-detailed">
-                        <div class="feature-number">01</div>
-                        <div class="feature-content">
-                            <h3>TypeScript Control Plane</h3>
-                            <p>Full TypeScript control plane powered by Fastify with WebSocket reconciliation loops. REST + WebSocket API for complete cluster management. Round-robin scheduler distributes services across nodes intelligently.</p>
-                            <ul>
-                                <li>Fastify-based REST API</li>
-                                <li>WebSocket reconciliation loops</li>
-                                <li>Round-robin scheduler</li>
-                                <li>Zod-based schema validation</li>
-                            </ul>
-                        </div>
+                <div class="two-column">
+                    <div class="feature-list">
+                        <h3>Platform</h3>
+                        <ul>
+                            <li>✅ TypeScript control plane (Fastify + WebSocket)</li>
+                            <li>✅ Lightweight agents (Node 20+)</li>
+                            <li>✅ Declarative CLI (kubectl-inspired)</li>
+                            <li>✅ Next.js dashboard with real-time metrics</li>
+                            <li>✅ Round-robin scheduler</li>
+                            <li>✅ Zod-based schema validation</li>
+                            <li>✅ Process supervision with restarts</li>
+                            <li>✅ Heartbeat health checks</li>
+                        </ul>
                     </div>
-
-                    <div class="feature-item-detailed">
-                        <div class="feature-number">02</div>
-                        <div class="feature-content">
-                            <h3>Lightweight Agents</h3>
-                            <p>Node 20+ agents run on each machine, supervising processes with restart policies. Stream metrics, heartbeats, and logs to the control plane. No container overhead.</p>
-                            <ul>
-                                <li>Process supervision with restart policies</li>
-                                <li>Real-time metrics streaming</li>
-                                <li>Heartbeat health checks</li>
-                                <li>Minimal resource footprint</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="feature-item-detailed">
-                        <div class="feature-number">03</div>
-                        <div class="feature-content">
-                            <h3>Declarative CLI</h3>
-                            <p>Kubernetes-inspired CLI with commands like <code>apply</code>, <code>get</code>, <code>logs</code>, and <code>exec</code>. Commander-based with Chalk/Ora UX for beautiful terminal output.</p>
-                            <ul>
-                                <li><code>gorion init</code> - Initialize configuration</li>
-                                <li><code>gorion apply</code> - Deploy services</li>
-                                <li><code>gorion get</code> - View resources</li>
-                                <li><code>gorion logs</code> - Stream logs</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="feature-item-detailed">
-                        <div class="feature-number">04</div>
-                        <div class="feature-content">
-                            <h3>Next.js Dashboard</h3>
-                            <p>Production-ready dashboard built with Next.js 14 and Tailwind CSS. Real-time service status, node metrics, and live log streaming. Beautiful, responsive, and fast.</p>
-                            <ul>
-                                <li>Service and node overview</li>
-                                <li>Real-time metrics charts</li>
-                                <li>Live log streaming</li>
-                                <li>Responsive Tailwind UI</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="feature-item-detailed">
-                        <div class="feature-number">05</div>
-                        <div class="feature-content">
-                            <h3>DNS Manager</h3>
-                            <p>Integrated multi-provider DNS automation supporting DigitalOcean, Cloudflare, AWS Route53, wildcard proxy, and local providers. Optional wildcard SSL automation with Let's Encrypt.</p>
-                            <ul>
-                                <li>Multi-cloud DNS providers</li>
-                                <li>Wildcard SSL automation</li>
-                                <li>Service discovery integration</li>
-                                <li>Automatic record updates</li>
-                            </ul>
-                        </div>
+                    <div class="feature-list">
+                        <h3>Infrastructure</h3>
+                        <ul>
+                            <li>🌐 Multi-provider DNS automation</li>
+                            <li>🔒 Wildcard SSL with Let's Encrypt</li>
+                            <li>📊 Real-time metrics streaming</li>
+                            <li>📝 Live log streaming</li>
+                            <li>🔌 Plugin architecture</li>
+                            <li>🎯 Service discovery</li>
+                            <li>📦 Monorepo with pnpm + Turborepo</li>
+                            <li>🔧 Shared utilities and schemas</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="architecture" class="section">
+        <section id="installation" class="section">
             <div class="container">
-                <h2 class="section-title">Architecture</h2>
-                <div class="architecture-diagram">
-                    <div class="arch-layer">
-                        <h3>Control Plane</h3>
-                        <div class="arch-components">
-                            <div class="arch-component">
-                                <strong>@orion/core</strong>
-                                <p>REST + WebSocket API, Scheduler, Controllers</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="arch-layer">
-                        <h3>Client Tools</h3>
-                        <div class="arch-components">
-                            <div class="arch-component">
-                                <strong>@orion/cli</strong>
-                                <p>CLI tool (gorion)</p>
-                            </div>
-                            <div class="arch-component">
-                                <strong>@orion/dashboard</strong>
-                                <p>Next.js UI</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="arch-layer">
-                        <h3>Nodes</h3>
-                        <div class="arch-components">
-                            <div class="arch-component">
-                                <strong>@orion/agent</strong>
-                                <p>Process supervisor, metrics streaming</p>
-                            </div>
-                            <div class="arch-component">
-                                <strong>Services</strong>
-                                <p>Node, Bun, Deno workloads</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="arch-layer">
-                        <h3>Infrastructure</h3>
-                        <div class="arch-components">
-                            <div class="arch-component">
-                                <strong>@orion/dns-manager</strong>
-                                <p>Multi-provider DNS automation</p>
-                            </div>
-                            <div class="arch-component">
-                                <strong>@orion/shared</strong>
-                                <p>Schemas, utilities</p>
-                            </div>
-                        </div>
-                    </div>
+                <h2 class="section-title">Installation</h2>
+
+                <div class="install-method">
+                    <h3>Quick Start</h3>
+                    <pre><code><span class="comment"># Clone the repository</span>
+git clone https://github.com/Assoverse/Orion.git
+cd Orion
+
+<span class="comment"># Install dependencies</span>
+pnpm install
+
+<span class="comment"># Launch full stack (control plane + agent + dashboard)</span>
+scripts/dev.sh</code></pre>
                 </div>
+
+                <h3 class="subsection-title">Requirements</h3>
+                <ul class="requirements-list">
+                    <li><strong>Node.js:</strong> ≥20.0.0</li>
+                    <li><strong>pnpm:</strong> ≥8.0.0</li>
+                    <li><strong>TypeScript:</strong> ≥5.3</li>
+                </ul>
 
                 <h3 class="subsection-title">Monorepo Structure</h3>
                 <pre><code>/packages
-  core          # Control plane (API server, scheduler, controllers)
-  agent         # Node agent daemon
-  cli           # Orion CLI (gorion)
-  dashboard     # Next.js + Tailwind dashboard
-  dns-manager   # Multi-provider DNS automation
-  shared        # Shared schemas and utilities
+  core          <span class="comment"># Control plane (API server, scheduler, controllers)</span>
+  agent         <span class="comment"># Node agent daemon</span>
+  cli           <span class="comment"># Orion CLI (gorion)</span>
+  dashboard     <span class="comment"># Next.js + Tailwind dashboard</span>
+  dns-manager   <span class="comment"># Multi-provider DNS automation</span>
+  shared        <span class="comment"># Shared schemas and utilities</span>
 /examples
   simple-service
   next-app
   vite-app
-  vite-pwa
-/docs
-  architecture.md
-  api.md
-  plugins.md</code></pre>
+  vite-pwa</code></pre>
             </div>
         </section>
 
-        <section id="quickstart" class="section section-dark">
+        <section id="usage" class="section section-alt">
             <div class="container">
-                <h2 class="section-title">Quick Start</h2>
+                <h2 class="section-title">Usage</h2>
 
-                <div class="quickstart-steps">
-                    <div class="qs-step">
-                        <div class="qs-number">1</div>
-                        <div class="qs-content">
-                            <h3>Install Dependencies</h3>
-                            <pre><code>pnpm install</code></pre>
-                        </div>
-                    </div>
-
-                    <div class="qs-step">
-                        <div class="qs-number">2</div>
-                        <div class="qs-content">
-                            <h3>Launch Full Stack</h3>
-                            <pre><code>scripts/dev.sh</code></pre>
-                            <p>Starts control plane, agent, and dashboard</p>
-                        </div>
-                    </div>
-
-                    <div class="qs-step">
-                        <div class="qs-number">3</div>
-                        <div class="qs-content">
-                            <h3>Deploy Configuration</h3>
-                            <pre><code>pnpm --filter @orion/cli run dev
-gorion init
-gorion apply -f orion.yaml</code></pre>
-                        </div>
-                    </div>
-
-                    <div class="qs-step">
-                        <div class="qs-number">4</div>
-                        <div class="qs-content">
-                            <h3>Open Dashboard</h3>
-                            <p>Visit <a href="http://localhost:3000" target="_blank">http://localhost:3000</a></p>
-                        </div>
-                    </div>
+                <h3 class="subsection-title">Deploy Your First Service</h3>
+                <div class="code-example">
+                    <h4>1. Initialize CLI</h4>
+                    <pre><code>pnpm --filter @orion/cli run dev
+gorion init</code></pre>
                 </div>
 
-                <h3 class="subsection-title">Example Configuration</h3>
-                <pre><code>apiVersion: orion/v1
-kind: Config
-metadata:
-  name: demo
-  environment: dev
-spec:
-  services:
-    - name: api-users
-      path: ./examples/simple-service
-      entry: src/index.ts
-      runtime: node
-      replicas: 2
-      env:
-        NODE_ENV: development
-      ports:
-        - name: http
-          port: 4000
+                <div class="code-example">
+                    <h4>2. Create Configuration</h4>
+                    <pre><code><span class="keyword">apiVersion:</span> orion/v1
+<span class="keyword">kind:</span> Config
+<span class="keyword">metadata:</span>
+  <span class="keyword">name:</span> <span class="string">demo</span>
+  <span class="keyword">environment:</span> <span class="string">dev</span>
+<span class="keyword">spec:</span>
+  <span class="keyword">services:</span>
+    - <span class="keyword">name:</span> <span class="string">api-users</span>
+      <span class="keyword">path:</span> <span class="string">./examples/simple-service</span>
+      <span class="keyword">entry:</span> <span class="string">src/index.ts</span>
+      <span class="keyword">runtime:</span> <span class="string">node</span>
+      <span class="keyword">replicas:</span> <span class="number">2</span>
+      <span class="keyword">env:</span>
+        <span class="keyword">NODE_ENV:</span> <span class="string">development</span>
+      <span class="keyword">ports:</span>
+        - <span class="keyword">name:</span> <span class="string">http</span>
+          <span class="keyword">port:</span> <span class="number">4000</span>
 
-    - name: web
-      path: ./examples/next-app
-      type: nextjs
-      runtime: node
-      replicas: 1
+    - <span class="keyword">name:</span> <span class="string">web</span>
+      <span class="keyword">path:</span> <span class="string">./examples/next-app</span>
+      <span class="keyword">type:</span> <span class="string">nextjs</span>
+      <span class="keyword">runtime:</span> <span class="string">node</span>
+      <span class="keyword">replicas:</span> <span class="number">1</span></code></pre>
+                </div>
 
-  nodes: []</code></pre>
+                <div class="code-example">
+                    <h4>3. Deploy</h4>
+                    <pre><code>gorion apply -f orion.yaml</code></pre>
+                </div>
+
+                <div class="code-example">
+                    <h4>4. View Services</h4>
+                    <pre><code>gorion get services
+
+<span class="comment"># Output:</span>
+NAME        STATUS    REPLICAS   NODES
+api-users   Running   2/2        node-01
+web         Running   1/1        node-02</code></pre>
+                </div>
+
+                <div class="code-example">
+                    <h4>5. Open Dashboard</h4>
+                    <p>Visit <a href="http://localhost:3000" target="_blank">http://localhost:3000</a> for the visual dashboard</p>
+                </div>
+
+                <h3 class="subsection-title">CLI Commands</h3>
+                <table class="commands-table">
+                    <thead>
+                        <tr>
+                            <th>Command</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>gorion init</code></td>
+                            <td>Initialize configuration</td>
+                        </tr>
+                        <tr>
+                            <td><code>gorion apply -f &lt;file&gt;</code></td>
+                            <td>Deploy services from config file</td>
+                        </tr>
+                        <tr>
+                            <td><code>gorion get services</code></td>
+                            <td>List all services</td>
+                        </tr>
+                        <tr>
+                            <td><code>gorion get nodes</code></td>
+                            <td>List all nodes</td>
+                        </tr>
+                        <tr>
+                            <td><code>gorion logs &lt;service&gt;</code></td>
+                            <td>Stream service logs</td>
+                        </tr>
+                        <tr>
+                            <td><code>gorion exec &lt;service&gt;</code></td>
+                            <td>Execute command in service</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </section>
 
@@ -352,84 +290,74 @@ spec:
                     <a href="https://github.com/Assoverse/Orion/wiki" target="_blank" class="doc-card">
                         <div class="doc-icon">📖</div>
                         <h3>Wiki</h3>
-                        <p>Complete documentation, guides, and tutorials</p>
+                        <p>Complete guides and tutorials</p>
                     </a>
                     <a href="https://github.com/Assoverse/Orion/tree/main/docs/architecture.md" target="_blank" class="doc-card">
                         <div class="doc-icon">🏗️</div>
                         <h3>Architecture</h3>
-                        <p>System design and component overview</p>
+                        <p>System design and components</p>
                     </a>
                     <a href="https://github.com/Assoverse/Orion/tree/main/docs/api.md" target="_blank" class="doc-card">
                         <div class="doc-icon">🔌</div>
                         <h3>API Reference</h3>
-                        <p>REST and WebSocket API documentation</p>
+                        <p>REST and WebSocket APIs</p>
                     </a>
                     <a href="https://github.com/Assoverse/Orion/tree/main/docs/plugins.md" target="_blank" class="doc-card">
                         <div class="doc-icon">🧩</div>
                         <h3>Plugins</h3>
-                        <p>Extend Orion with custom plugins</p>
+                        <p>Extend with custom plugins</p>
                     </a>
                     <a href="https://github.com/Assoverse/Orion/tree/main/docs/dns-manager" target="_blank" class="doc-card">
                         <div class="doc-icon">🌐</div>
                         <h3>DNS Manager</h3>
-                        <p>Multi-provider DNS configuration</p>
+                        <p>Multi-provider DNS setup</p>
                     </a>
                     <a href="https://github.com/Assoverse/Orion/tree/main/examples" target="_blank" class="doc-card">
                         <div class="doc-icon">💡</div>
                         <h3>Examples</h3>
-                        <p>Sample applications and configurations</p>
+                        <p>Sample apps and configs</p>
                     </a>
                 </div>
             </div>
         </section>
 
-        <section id="contributing" class="section section-dark">
+        <section id="contributing" class="section section-alt">
             <div class="container">
                 <h2 class="section-title">Contributing</h2>
-                <p class="section-intro">Orion is open-source and welcomes contributions from the community.</p>
+                <p class="center-text">Orion is open-source and welcomes contributions from the community.</p>
 
-                <div class="roadmap">
-                    <h3 class="subsection-title">Roadmap</h3>
-                    <div class="roadmap-items">
-                        <div class="roadmap-item">
-                            <div class="roadmap-status planned">Planned</div>
-                            <h4>Streaming Logs & Remote Exec</h4>
-                            <p><code>orion logs --follow</code>, <code>orion exec</code></p>
-                        </div>
-                        <div class="roadmap-item">
-                            <div class="roadmap-status planned">Planned</div>
-                            <h4>Auto-scaling</h4>
-                            <p>CPU/memory-driven policies</p>
-                        </div>
-                        <div class="roadmap-item">
-                            <div class="roadmap-status planned">Planned</div>
-                            <h4>Plugin Marketplace</h4>
-                            <p>e.g., <code>@orion/plugin-vercel</code></p>
-                        </div>
-                        <div class="roadmap-item">
-                            <div class="roadmap-status planned">Planned</div>
-                            <h4>Auth & RBAC</h4>
-                            <p>JWT roles and permissions</p>
-                        </div>
-                        <div class="roadmap-item">
-                            <div class="roadmap-status planned">Planned</div>
-                            <h4>Serverless Triggers</h4>
-                            <p>HTTP, cron, queue integrations</p>
-                        </div>
-                        <div class="roadmap-item">
-                            <div class="roadmap-status planned">Planned</div>
-                            <h4>Multi-cluster Federation</h4>
-                            <p>Preview environments and federation</p>
-                        </div>
+                <div class="contribute-steps">
+                    <div class="contribute-step">
+                        <div class="step-number">1</div>
+                        <h3>Fork Repository</h3>
+                        <p>Create your own fork on GitHub</p>
+                    </div>
+                    <div class="contribute-step">
+                        <div class="step-number">2</div>
+                        <h3>Create Branch</h3>
+                        <pre><code>git checkout -b feature/my-feature</code></pre>
+                    </div>
+                    <div class="contribute-step">
+                        <div class="step-number">3</div>
+                        <h3>Make Changes</h3>
+                        <p>Implement your feature or fix</p>
+                    </div>
+                    <div class="contribute-step">
+                        <div class="step-number">4</div>
+                        <h3>Open PR</h3>
+                        <p>Submit pull request with description</p>
                     </div>
                 </div>
 
-                <div class="contribute-cta">
-                    <h3>Get Involved</h3>
-                    <p>Fork the repository, open issues, or submit pull requests. Check our contribution guidelines to get started.</p>
-                    <a href="https://github.com/Assoverse/Orion/issues" target="_blank" class="btn btn-primary">View Issues</a>
-                    <a href="https://github.com/Assoverse/Orion" target="_blank" class="btn btn-secondary">Fork on GitHub</a>
-                </div>
+                <h3 class="subsection-title">Roadmap</h3>
+                <ul class="roadmap-list">
+                    <li>🔜 Streaming logs and remote exec (<code>orion logs --follow</code>, <code>orion exec</code>)</li>
+                    <li>🔜 Auto-scaling driven by CPU/memory policies</li>
+                    <li>🔜 Plugin marketplace (e.g., <code>@orion/plugin-vercel</code>)</li>
+                    <li>🔜 Auth & RBAC with JWT roles</li>
+                    <li>🔜 Serverless triggers (HTTP, cron, queue integrations)</li>
+                    <li>🔜 Multi-cluster federation and preview environments</li>
+                </ul>
             </div>
         </section>
     </main>
